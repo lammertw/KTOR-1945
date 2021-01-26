@@ -1,0 +1,29 @@
+pluginManagement {
+    repositories {
+        mavenLocal()
+        maven { url "https://plugins.gradle.org/m2/"}
+        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+    }
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "kotlin-multiplatform") {
+                useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:${requested.version}")
+            }
+            if (requested.id.id == "kotlinx-serialization") {
+                useModule("org.jetbrains.kotlin:kotlin-serialization:${requested.version}")
+            }
+        }
+    }
+}
+
+enableFeaturePreview("GRADLE_METADATA")
+
+rootProject.name = 'KTOR-1945'
+
+def properties = new Properties()
+def localPropertyFile = file("local.properties")
+if (localPropertyFile.exists()) {
+    localPropertyFile.withInputStream { properties.load(it) }
+}
+
+include ':server', ':web'
